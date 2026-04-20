@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>About — Axiom Liquidity Research</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#080808;--surface:#0f0f0f;--border:#1a1a1a;--border2:#222;
+      --text:#e8e8e8;--muted:#888;--muted2:#555;
+      --accent:#2a5cff;--accent2:rgba(42,92,255,.12);
+      --max:820px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;line-height:1.6;font-size:15px}
+    a{color:inherit;text-decoration:none}
+    nav{position:sticky;top:0;z-index:100;background:rgba(8,8,8,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px}
+    .nav-inner{max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:52px}
+    .brand{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+    .nav-links{display:flex;gap:28px;font-size:13px;color:var(--muted2)}
+    .nav-links a:hover,.nav-links a.active{color:var(--text)}
+
+    .wrap{max-width:var(--max);margin:0 auto;padding:48px 24px 80px}
+    h1{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,42px);font-weight:600;letter-spacing:-.02em;margin-bottom:10px}
+    .page-sub{font-size:15px;color:var(--muted);max-width:580px;line-height:1.7;margin-bottom:36px}
+
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;margin-bottom:12px}
+    .card-kicker{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+    h2{font-family:'Syne',sans-serif;font-size:18px;font-weight:600;margin-bottom:12px}
+    p{color:#bbb;font-size:14.5px;line-height:1.75;margin-bottom:12px}
+    p:last-child{margin-bottom:0}
+    ul{list-style:none;padding:0}
+    li{font-size:14px;color:#bbb;padding:8px 0;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px}
+    li:last-child{border-bottom:none}
+    li::before{content:"→";color:var(--accent);flex-shrink:0;font-family:'DM Mono',monospace;font-size:12px;margin-top:1px}
+    .callout{padding:16px;border-left:2px solid var(--accent);background:var(--accent2);border-radius:8px;margin-top:14px;font-size:14px;color:#ccc;line-height:1.7}
+
+    /* FRAMEWORK DIAGRAM */
+    .fw-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+    .fw-cell{border-radius:8px;padding:14px;border:1px solid;text-align:center}
+    .fw-cell.qe-low{background:rgba(74,222,128,.05);border-color:rgba(74,222,128,.2)}
+    .fw-cell.qt-high{background:rgba(248,113,113,.05);border-color:rgba(248,113,113,.2)}
+    .fw-cell.qt-low{background:rgba(96,165,250,.05);border-color:rgba(96,165,250,.2)}
+    .fw-cell.transition{background:rgba(167,139,250,.05);border-color:rgba(167,139,250,.2)}
+    .fw-cell-top{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+    .fw-cell.qe-low .fw-cell-top{color:#4ade80}
+    .fw-cell.qt-high .fw-cell-top{color:#f87171}
+    .fw-cell.qt-low .fw-cell-top{color:#60a5fa}
+    .fw-cell.transition .fw-cell-top{color:#a78bfa}
+    .fw-cell h3{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;margin-bottom:4px}
+    .fw-cell p{font-size:11.5px;color:var(--muted);margin:0;line-height:1.5}
+
+    /* LAYER DIAGRAM */
+    .layers{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+    .layer{padding:14px 16px;border-radius:8px;border:1px solid;display:flex;align-items:flex-start;gap:12px}
+    .layer.anchor{background:rgba(74,222,128,.04);border-color:rgba(74,222,128,.2)}
+    .layer.beta{background:rgba(42,92,255,.04);border-color:rgba(42,92,255,.2)}
+    .layer.alpha{background:rgba(248,113,113,.04);border-color:rgba(248,113,113,.2)}
+    .layer-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+    .layer-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+    .layer.anchor .layer-title{color:#4ade80}
+    .layer.beta .layer-title{color:#2a5cff}
+    .layer.alpha .layer-title{color:#f87171}
+    .layer-body{font-size:13px;color:#bbb;line-height:1.6}
+
+    footer{border-top:1px solid var(--border);padding:28px 24px;text-align:center;font-size:12px;color:var(--muted2);font-family:'DM Mono',monospace}
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <div class="brand">Axiom Liquidity Research</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="regimes.html">Regimes</a>
+      <a href="performance.html">Performance</a>
+      <a href="about.html" class="active">About</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <h1>The Framework</h1>
+  <p class="page-sub">A systematic, regime-based approach to portfolio construction. Two variables. Four quadrants. One discipline applied consistently since 2005.</p>
+
+  <div class="card">
+    <div class="card-kicker">Origin</div>
+    <h2>Why this exists</h2>
+    <p>This project started with a simple question: if the Federal Reserve controls the two most powerful levers in markets — the price of money (interest rates) and the supply of money (balance sheet) — then understanding those two variables should be the foundation of any portfolio decision.</p>
+    <p>The hypothesis: most market outcomes are not driven by individual company narratives, geopolitics, or analyst forecasts. They are driven by the operating regime of liquidity. Get the regime right, and asset selection becomes dramatically more tractable.</p>
+    <div class="callout">
+      This is not a prediction system. It is a <strong>regime classification system</strong>. The framework does not forecast what the Fed will do. It reads what the Fed has done and constructs a portfolio aligned with that reality.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-kicker">The Two Variables</div>
+    <h2>Balance sheet × interest rates = regime</h2>
+    <p>The Fed operates two independent policy tools. They often move together but don't have to. Each combination creates a distinct macro environment:</p>
+    <div class="fw-grid">
+      <div class="fw-cell qe-low">
+        <div class="fw-cell-top">Quadrant I</div>
+        <h3>QE + Low Rates</h3>
+        <p>Maximum stimulus. Risk-on. Growth and high-beta dominate. Gold as monetary hedge.</p>
+      </div>
+      <div class="fw-cell qt-high">
+        <div class="fw-cell-top">Quadrant II</div>
+        <h3>QT + Rising Rates</h3>
+        <p>Full restriction. Defensives, energy, quality cash flows. Avoid duration.</p>
+      </div>
+      <div class="fw-cell qt-low">
+        <div class="fw-cell-top">Quadrant III</div>
+        <h3>QT + Low Rates</h3>
+        <p>Normalization phase. Selective quality. Value over growth. Await next regime.</p>
+      </div>
+      <div class="fw-cell transition">
+        <div class="fw-cell-top">Transition</div>
+        <h3>In-Between</h3>
+        <p>Regime change in progress. Dispersion rises. Balance over conviction.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-kicker">Portfolio Construction</div>
+    <h2>Anchor → Beta → Alpha</h2>
+    <p>Every semi-annual portfolio is built in three layers. The quadrant determines what belongs in each layer. The MRM Scorecard (risk assessment) determines how aggressively each layer is sized.</p>
+    <div class="layers">
+      <div class="layer anchor">
+        <div class="layer-icon">⚓</div>
+        <div>
+          <div class="layer-title">Anchor</div>
+          <div class="layer-body">The capital preservation floor. Its job is not to generate returns — it is to limit drawdowns and preserve the compounding base. Depending on the regime: short-duration bonds (SHY, IEI), gold (GLD), inflation-linked bonds (TIP), or defensive equity (XLV, XLP). The anchor is sacred — it is never sacrificed for yield.</div>
+        </div>
+      </div>
+      <div class="layer beta">
+        <div class="layer-icon">β</div>
+        <div>
+          <div class="layer-title">Beta — Regime Capture</div>
+          <div class="layer-body">ETFs that capture the dominant sector behavior implied by the current quadrant. In QE+Low: QQQ, IWM, EEM. In QT+High: XLE, XLV, VTV. In Transition: diversified sector basket. Beta is the engine — it aligns the portfolio with the macro current without requiring individual stock selection.</div>
+        </div>
+      </div>
+      <div class="layer alpha">
+        <div class="layer-icon">α</div>
+        <div>
+          <div class="layer-title">Alpha — Conviction</div>
+          <div class="layer-body">Individual stocks with identifiable catalysts within the regime context. These are never speculative: only blue-chips with proven earnings, strong balance sheets, and a clear reason to outperform given the current policy environment. The alpha sleeve amplifies regime-aligned themes — it does not introduce orthogonal risk.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-kicker">Rules &amp; Discipline</div>
+    <h2>What makes this systematic</h2>
+    <ul>
+      <li>Rebalance only at semester boundaries (June/July and December/January)</li>
+      <li>Regime assessment uses only data available at the rebalance date — no hindsight</li>
+      <li>10 positions minimum. Portfolio always fully invested (100%).</li>
+      <li>MRM Scorecard assessed before any allocation decision — risk gates the profile</li>
+      <li>Extraordinary rebalance allowed only if three systemic triggers fire simultaneously</li>
+      <li>No leverage, no shorting, no derivatives — long-only framework</li>
+      <li>The classification engine is rules-based; downstream logic is published, upstream thresholds are proprietary</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-kicker">What this is not</div>
+    <h2>Boundaries of the framework</h2>
+    <ul>
+      <li>Not a prediction of what the Fed will do — it reads what the Fed has already done</li>
+      <li>Not a trading system — no intra-period adjustments, no signals, no alerts</li>
+      <li>Not a guarantee — the framework can be wrong when regimes are misread or transition faster than expected</li>
+      <li>Not investment advice — this is an educational and research record</li>
+    </ul>
+    <div class="callout">
+      The most important year in the track record is <strong>2022</strong>: +3.2% while the S&P fell -19.4%. Not because of a clever call — but because the QT+Rates regime was identified correctly at end of 2021, and the defensive rotation was executed before the damage occurred.
+    </div>
+  </div>
+</div>
+
+<footer>Axiom Liquidity Research · Portfolio FED 2005–2026 · For informational and educational purposes only</footer>
+</body>
+</html>

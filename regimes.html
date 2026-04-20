@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Historical Regimes — Axiom Liquidity Research</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#080808;--surface:#0f0f0f;--border:#1a1a1a;--border2:#222;
+      --text:#e8e8e8;--muted:#888;--muted2:#555;
+      --accent:#2a5cff;--accent2:rgba(42,92,255,.12);
+      --qe-low:#4ade80;--qt-high:#f87171;--qt-low:#60a5fa;
+      --transition:#a78bfa;--qe-high:#fb923c;
+      --max:1020px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;line-height:1.6;font-size:15px}
+    a{color:inherit;text-decoration:none}
+    nav{position:sticky;top:0;z-index:100;background:rgba(8,8,8,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px}
+    .nav-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:52px}
+    .brand{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+    .nav-links{display:flex;gap:28px;font-size:13px;color:var(--muted2)}
+    .nav-links a:hover,.nav-links a.active{color:var(--text)}
+
+    .wrap{max-width:var(--max);margin:0 auto;padding:48px 24px 80px}
+
+    h1{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,42px);font-weight:600;letter-spacing:-.02em;margin-bottom:10px}
+    .page-sub{font-size:15px;color:var(--muted);max-width:640px;line-height:1.7;margin-bottom:32px}
+
+    /* FILTERS */
+    .filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px;align-items:center}
+    .filter-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);margin-right:4px}
+    .filter-btn{padding:7px 14px;border-radius:6px;font-size:12px;font-family:'DM Mono',monospace;letter-spacing:.5px;cursor:pointer;transition:all .2s;border:1px solid var(--border2);background:transparent;color:var(--muted);white-space:nowrap}
+    .filter-btn:hover,.filter-btn.active{color:var(--text);border-color:var(--muted2)}
+    .filter-btn[data-q="all"].active{background:var(--accent2);border-color:rgba(42,92,255,.4);color:var(--text)}
+    .filter-btn[data-q="qe-low"].active{background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.4);color:var(--qe-low)}
+    .filter-btn[data-q="qt-high"].active{background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.4);color:var(--qt-high)}
+    .filter-btn[data-q="qt-low"].active{background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.4);color:var(--qt-low)}
+    .filter-btn[data-q="transition"].active{background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.4);color:var(--transition)}
+
+    /* RESULTS COUNT */
+    .results-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted2);margin-bottom:20px;letter-spacing:.5px}
+
+    /* TIMELINE */
+    .timeline{position:relative}
+    .timeline-year{margin-bottom:2px}
+    .year-header{display:flex;align-items:center;gap:12px;padding:10px 0 6px;position:sticky;top:52px;z-index:5;background:var(--bg)}
+    .year-label{font-family:'Syne',sans-serif;font-size:22px;font-weight:600;color:var(--muted2)}
+    .year-perf{display:flex;gap:10px;align-items:center}
+    .yr-badge{font-family:'DM Mono',monospace;font-size:11px;padding:3px 8px;border-radius:4px;border:1px solid}
+    .yr-badge.pos{color:var(--qe-low);border-color:rgba(74,222,128,.3);background:rgba(74,222,128,.05)}
+    .yr-badge.neg{color:var(--qt-high);border-color:rgba(248,113,113,.3);background:rgba(248,113,113,.05)}
+
+    .sem-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
+    @media(max-width:640px){.sem-cards{grid-template-columns:1fr}}
+
+    .sem-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px;cursor:pointer;transition:all .18s;position:relative;overflow:hidden}
+    .sem-card:hover{border-color:var(--border2);transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,0,0,.4)}
+    .sem-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+    .sem-card.qe-low::before{background:var(--qe-low)}
+    .sem-card.qt-high::before{background:var(--qt-high)}
+    .sem-card.qt-low::before{background:var(--qt-low)}
+    .sem-card.transition::before{background:var(--transition)}
+    .sem-card.qe-high::before{background:var(--qe-high)}
+
+    .sem-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+    .sem-label{font-family:'Syne',sans-serif;font-size:16px;font-weight:600}
+    .sem-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border-radius:4px;border:1px solid}
+    .sem-card.qe-low .sem-tag{color:var(--qe-low);border-color:rgba(74,222,128,.3)}
+    .sem-card.qt-high .sem-tag{color:var(--qt-high);border-color:rgba(248,113,113,.3)}
+    .sem-card.qt-low .sem-tag{color:var(--qt-low);border-color:rgba(96,165,250,.3)}
+    .sem-card.transition .sem-tag{color:var(--transition);border-color:rgba(167,139,250,.3)}
+
+    .sem-rate{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:8px}
+    .sem-regime{font-size:12.5px;color:#aaa;line-height:1.55;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+    .sem-holdings{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
+    .ticker{font-family:'DM Mono',monospace;font-size:10px;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,.04);border:1px solid var(--border2);color:var(--muted)}
+
+    .sem-footer{display:flex;justify-content:space-between;align-items:center}
+    .sem-ret{font-family:'DM Mono',monospace;font-size:13px}
+    .sem-ret.pos{color:var(--qe-low)}
+    .sem-ret.neg{color:var(--qt-high)}
+    .sem-arrow{color:var(--muted2);font-size:14px;transition:transform .2s}
+    .sem-card:hover .sem-arrow{transform:translateX(3px)}
+
+    .hidden{display:none!important}
+
+    footer{border-top:1px solid var(--border);padding:28px 24px;text-align:center;font-size:12px;color:var(--muted2);font-family:'DM Mono',monospace}
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <div class="brand">Axiom Liquidity Research</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="regimes.html" class="active">Regimes</a>
+      <a href="performance.html">Performance</a>
+      <a href="about.html">About</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <h1>Historical Regimes</h1>
+  <p class="page-sub">Every semi-annual allocation from S1 2005 to S1 2026 — each anchored to the Fed's operating regime at that moment. Filter by quadrant to find historical analogues for the current environment.</p>
+
+  <div class="filter-bar">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" data-q="all">All (42)</button>
+    <button class="filter-btn" data-q="qe-low">QE + Low Rates</button>
+    <button class="filter-btn" data-q="qt-high">QT + Rising Rates</button>
+    <button class="filter-btn" data-q="qt-low">QT + Low Rates</button>
+    <button class="filter-btn" data-q="transition">Transition</button>
+  </div>
+
+  <div class="results-meta" id="results-meta">Showing all 42 semesters</div>
+
+  <div class="timeline" id="timeline"></div>
+</div>
+
+<footer>Axiom Liquidity Research · Historical Regimes Library · Educational purposes only</footer>
+
+<script src="data.js"></script>
+<script>
+const QD = QUADRANTS;
+let activeFilter = 'all';
+
+// Check URL param
+const urlQ = new URLSearchParams(location.search).get('q');
+if(urlQ && QD[urlQ]) activeFilter = urlQ;
+
+function getYearPerf(year) {
+  return ANNUAL_PERF[year.toString()] || null;
+}
+
+function buildTimeline(filter) {
+  const tl = document.getElementById('timeline');
+  tl.innerHTML = '';
+
+  // Group by year
+  const byYear = {};
+  SEMESTERS.forEach(s => {
+    if(filter !== 'all' && s.quadrant !== filter) return;
+    if(!byYear[s.year]) byYear[s.year] = [];
+    byYear[s.year].push(s);
+  });
+
+  const years = Object.keys(byYear).sort((a,b)=>b-a);
+  let total = 0;
+
+  years.forEach(yr => {
+    const sems = byYear[yr];
+    total += sems.length;
+    const perf = getYearPerf(yr);
+
+    const yrDiv = document.createElement('div');
+    yrDiv.className = 'timeline-year';
+
+    let perfHtml = '';
+    if(perf && perf.portfolio !== null) {
+      const cls = perf.portfolio >= 0 ? 'pos' : 'neg';
+      const sp = perf.sp500 !== null ? ` vs S&P ${perf.sp500>0?'+':''}${perf.sp500}%` : '';
+      perfHtml = `<span class="yr-badge ${cls}">${perf.portfolio>0?'+':''}${perf.portfolio}%${sp}</span>`;
+    }
+
+    yrDiv.innerHTML = `
+      <div class="year-header">
+        <div class="year-label">${yr}</div>
+        <div class="year-perf">${perfHtml}</div>
+      </div>
+      <div class="sem-cards" id="cards-${yr}"></div>`;
+    tl.appendChild(yrDiv);
+
+    const cardsDiv = yrDiv.querySelector(`#cards-${yr}`);
+    sems.forEach(s => {
+      const qd = QD[s.quadrant];
+      const hl = HOLDINGS[s.label] || [];
+      const tickers = hl.slice(0,6).map(h=>`<span class="ticker">${h.ticker}</span>`).join('');
+      const moreCount = hl.length > 6 ? `<span class="ticker">+${hl.length-6}</span>` : '';
+      const perf2 = getYearPerf(s.year);
+
+      const card = document.createElement('div');
+      card.className = `sem-card ${s.quadrant}`;
+      card.onclick = () => location.href = `semester.html?id=${s.id}`;
+      card.innerHTML = `
+        <div class="sem-header">
+          <div class="sem-label">${s.label}</div>
+          <div class="sem-tag">${qd.tag}</div>
+        </div>
+        <div class="sem-rate">Fed: ${s.fedRate}</div>
+        <div class="sem-regime">${s.regime}</div>
+        <div class="sem-holdings">${tickers}${moreCount}</div>
+        <div class="sem-footer">
+          <div class="sem-ret ${perf2 && perf2.portfolio >= 0 ? 'pos':'neg'}">
+            ${perf2 && perf2.portfolio !== null ? (perf2.portfolio>0?'+':'')+perf2.portfolio+'% yr' : '—'}
+          </div>
+          <div class="sem-arrow">›</div>
+        </div>`;
+      cardsDiv.appendChild(card);
+    });
+  });
+
+  // Update meta
+  const meta = document.getElementById('results-meta');
+  if(filter === 'all') {
+    meta.textContent = `Showing all ${total} semesters across ${years.length} years`;
+  } else {
+    meta.textContent = `${total} semesters in "${QD[filter].label}" quadrant`;
+  }
+}
+
+// Filter buttons
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.q;
+    history.replaceState(null,'', activeFilter === 'all' ? 'regimes.html' : `?q=${activeFilter}`);
+    buildTimeline(activeFilter);
+  });
+});
+
+// Init
+if(activeFilter !== 'all') {
+  document.querySelector('[data-q="all"]').classList.remove('active');
+  const btn = document.querySelector(`[data-q="${activeFilter}"]`);
+  if(btn) btn.classList.add('active');
+}
+buildTimeline(activeFilter);
+</script>
+</body>
+</html>

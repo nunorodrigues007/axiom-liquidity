@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Semester — Axiom Liquidity Research</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#080808;--surface:#0f0f0f;--border:#1a1a1a;--border2:#222;
+      --text:#e8e8e8;--muted:#888;--muted2:#555;
+      --accent:#2a5cff;--accent2:rgba(42,92,255,.12);
+      --qe-low:#4ade80;--qt-high:#f87171;--qt-low:#60a5fa;
+      --transition:#a78bfa;--qe-high:#fb923c;
+      --max:900px;
+      --regime-accent:#2a5cff;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;line-height:1.6;font-size:15px}
+    a{color:inherit;text-decoration:none}
+    nav{position:sticky;top:0;z-index:100;background:rgba(8,8,8,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px}
+    .nav-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:52px;gap:12px}
+    .brand{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+    .nav-links{display:flex;gap:28px;font-size:13px;color:var(--muted2)}
+    .nav-links a:hover{color:var(--text)}
+    .back-link{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted2);letter-spacing:.5px}
+    .back-link:hover{color:var(--text)}
+
+    .wrap{max-width:var(--max);margin:0 auto;padding:48px 24px 80px}
+
+    /* HEADER */
+    .sem-header{margin-bottom:32px}
+    .sem-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+    .sem-dot{width:10px;height:10px;border-radius:50%}
+    .sem-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:5px;border:1px solid}
+    h1{font-family:'Syne',sans-serif;font-size:clamp(32px,5vw,48px);font-weight:600;letter-spacing:-.02em;margin-bottom:10px}
+    .sem-sub{font-size:15px;color:var(--muted);max-width:680px;line-height:1.7}
+
+    /* PILLS */
+    .pills{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+    .pill{font-family:'DM Mono',monospace;font-size:11px;padding:5px 10px;border-radius:5px;border:1px solid var(--border2);color:var(--muted)}
+
+    /* PERFORMANCE BANNER */
+    .perf-banner{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border-radius:10px;overflow:hidden;margin-bottom:28px}
+    .perf-cell{background:var(--surface);padding:18px;text-align:center}
+    .perf-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);margin-bottom:6px}
+    .perf-val{font-family:'Syne',sans-serif;font-size:24px;font-weight:600}
+    .perf-val.pos{color:var(--qe-low)}
+    .perf-val.neg{color:var(--qt-high)}
+
+    /* SECTIONS */
+    .section-block{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:22px;margin-bottom:14px}
+    .section-kicker{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--regime-accent);margin-bottom:10px}
+    .section-block h2{font-family:'Syne',sans-serif;font-size:17px;font-weight:600;margin-bottom:10px}
+    .section-block p{color:#bbb;font-size:14px;line-height:1.75}
+
+    /* FED PARAMS TABLE */
+    .params-table{width:100%;border-collapse:collapse;margin-top:12px}
+    .params-table tr{border-bottom:1px solid var(--border)}
+    .params-table tr:last-child{border-bottom:none}
+    .params-table td{padding:10px 8px;font-size:13.5px}
+    .params-table td:first-child{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted2);width:140px}
+    .params-table td:last-child{color:#ddd}
+
+    /* ALLOCATION LAYERS */
+    .layers{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+    .layer{border-radius:8px;padding:14px;border:1px solid var(--border2)}
+    .layer-name{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+    .layer.anchor .layer-name{color:var(--qe-low)}
+    .layer.beta .layer-name{color:var(--accent)}
+    .layer.alpha .layer-name{color:var(--qt-high)}
+    .layer.anchor{background:rgba(74,222,128,.04);border-color:rgba(74,222,128,.15)}
+    .layer.beta{background:rgba(42,92,255,.04);border-color:rgba(42,92,255,.15)}
+    .layer.alpha{background:rgba(248,113,113,.04);border-color:rgba(248,113,113,.15)}
+    .layer-desc{font-size:13px;color:#bbb;line-height:1.6}
+
+    /* HOLDINGS TABLE */
+    .holdings-table{width:100%;border-collapse:collapse;margin-top:12px}
+    .holdings-table th{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted2);padding:8px;border-bottom:1px solid var(--border);text-align:left}
+    .holdings-table td{padding:10px 8px;font-size:13.5px;border-bottom:1px solid var(--border)}
+    .holdings-table tr:last-child td{border-bottom:none}
+    .holdings-table .ticker-col{font-family:'DM Mono',monospace;font-size:12px;color:var(--text);font-weight:500}
+    .holdings-table .weight-col{font-family:'DM Mono',monospace;font-size:12px}
+    .weight-bar{height:3px;border-radius:2px;background:var(--accent);margin-top:4px}
+    .ret-col{font-family:'DM Mono',monospace;font-size:12px}
+    .ret-col.pos{color:var(--qe-low)}
+    .ret-col.neg{color:var(--qt-high)}
+
+    /* NAV BETWEEN SEMESTERS */
+    .sem-nav{display:flex;justify-content:space-between;align-items:center;margin-top:32px;padding-top:24px;border-top:1px solid var(--border)}
+    .sem-nav-btn{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);transition:color .2s;cursor:pointer}
+    .sem-nav-btn:hover{color:var(--text)}
+    .sem-nav-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted2)}
+
+    footer{border-top:1px solid var(--border);padding:28px 24px;text-align:center;font-size:12px;color:var(--muted2);font-family:'DM Mono',monospace}
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <div class="brand">Axiom Liquidity Research</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="regimes.html">Regimes</a>
+      <a href="performance.html">Performance</a>
+      <a href="about.html">About</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap" id="content">
+  <div style="color:var(--muted);font-family:'DM Mono',monospace;font-size:12px">Loading...</div>
+</div>
+
+<footer>Axiom Liquidity Research · Portfolio FED 2005–2026 · For informational and educational purposes only</footer>
+
+<script src="data.js"></script>
+<script>
+const QD = QUADRANTS;
+
+function render(sem) {
+  const qd = QD[sem.quadrant];
+  const idx = SEMESTERS.findIndex(s=>s.id===sem.id);
+  const prev = idx > 0 ? SEMESTERS[idx-1] : null;
+  const next = idx < SEMESTERS.length-1 ? SEMESTERS[idx+1] : null;
+  const yr = sem.year.toString();
+  const perf = ANNUAL_PERF[yr];
+  const hl = HOLDINGS[sem.label] || [];
+
+  document.title = `${sem.label} — Axiom Liquidity Research`;
+
+  // Color the regime accent
+  document.documentElement.style.setProperty('--regime-accent', qd.accent);
+
+  const wrap = document.getElementById('content');
+  wrap.innerHTML = `
+    <a href="regimes.html" class="back-link" style="display:inline-flex;align-items:center;gap:6px;margin-bottom:28px">← Back to all regimes</a>
+
+    <div class="sem-header">
+      <div class="sem-eyebrow">
+        <div class="sem-dot" style="background:${qd.accent}"></div>
+        <div class="sem-tag" style="color:${qd.accent};border-color:${qd.accent}33">${qd.tag}</div>
+      </div>
+      <h1>${sem.label}</h1>
+      <p class="sem-sub">${sem.regime}</p>
+      <div class="pills">
+        <span class="pill">Fed Rate: ${sem.fedRate}</span>
+        <span class="pill">Balance Sheet: ${sem.balanceSheet}</span>
+        <span class="pill">Regime: ${qd.label}</span>
+      </div>
+    </div>
+
+    ${perf ? `
+    <div class="perf-banner">
+      <div class="perf-cell">
+        <div class="perf-label">Year Return (${yr})</div>
+        <div class="perf-val ${perf.portfolio>=0?'pos':'neg'}">${perf.portfolio>0?'+':''}${perf.portfolio}%</div>
+      </div>
+      <div class="perf-cell">
+        <div class="perf-label">S&P 500 (${yr})</div>
+        <div class="perf-val ${perf.sp500>=0?'pos':'neg'}">${perf.sp500>0?'+':''}${perf.sp500}%</div>
+      </div>
+      <div class="perf-cell">
+        <div class="perf-label">Alpha Generated</div>
+        <div class="perf-val ${(perf.portfolio-perf.sp500)>=0?'pos':'neg'}">${(perf.portfolio-perf.sp500)>0?'+':''}${(perf.portfolio-perf.sp500).toFixed(1)}%</div>
+      </div>
+    </div>` : ''}
+
+    <div class="section-block">
+      <div class="section-kicker">01 — Regime Analysis</div>
+      <h2>Fed Policy at ${sem.label} Entry</h2>
+      <table class="params-table">
+        <tr><td>Rate</td><td>${sem.fedRate}</td></tr>
+        <tr><td>Balance Sheet</td><td>${sem.balanceSheet}</td></tr>
+        <tr><td>Quadrant</td><td>${qd.label} · ${qd.tag}</td></tr>
+      </table>
+      <p style="margin-top:14px">${sem.regime}</p>
+    </div>
+
+    <div class="section-block">
+      <div class="section-kicker">02 — Allocation Rationale</div>
+      <h2>Why this portfolio was constructed this way</h2>
+      <p>${sem.rationale}</p>
+      <div class="layers">
+        <div class="layer anchor">
+          <div class="layer-name">⚓ Anchor</div>
+          <div class="layer-desc">${sem.anchor}</div>
+        </div>
+        <div class="layer beta">
+          <div class="layer-name">β Beta</div>
+          <div class="layer-desc">${sem.beta}</div>
+        </div>
+        <div class="layer alpha">
+          <div class="layer-name">α Alpha</div>
+          <div class="layer-desc">${sem.alpha}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <div class="section-kicker">03 — Portfolio</div>
+      <h2>${sem.label} — Full Allocation</h2>
+      ${hl.length > 0 ? `
+      <table class="holdings-table">
+        <thead>
+          <tr>
+            <th>Ticker</th>
+            <th>Weight</th>
+            <th>Period Return</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${hl.map(h => `
+          <tr>
+            <td class="ticker-col">${h.ticker}</td>
+            <td class="weight-col">
+              ${h.weight}%
+              <div class="weight-bar" style="width:${Math.min(h.weight*3,100)}%"></div>
+            </td>
+            <td class="ret-col ${h.ret>=0?'pos':'neg'}">${h.ret>0?'+':''}${h.ret}%</td>
+            <td style="color:var(--muted);font-size:13px">${getRole(h.ticker, sem)}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>` : '<p style="color:var(--muted)">Allocation data not available for this period.</p>'}
+    </div>
+
+    <div class="sem-nav">
+      ${prev ? `<div class="sem-nav-btn" onclick="location.href='semester.html?id=${prev.id}'">
+        <span>←</span>
+        <div>
+          <div class="sem-nav-label">Previous</div>
+          <div>${prev.label}</div>
+        </div>
+      </div>` : '<div></div>'}
+      ${next ? `<div class="sem-nav-btn" onclick="location.href='semester.html?id=${next.id}'">
+        <div style="text-align:right">
+          <div class="sem-nav-label">Next</div>
+          <div>${next.label}</div>
+        </div>
+        <span>→</span>
+      </div>` : '<div></div>'}
+    </div>
+  `;
+}
+
+function getRole(ticker, sem) {
+  const anchor = sem.anchor || '';
+  const beta = sem.beta || '';
+  const alpha = sem.alpha || '';
+  if(anchor.includes(ticker)) return 'Anchor';
+  if(beta.includes(ticker)) return 'Beta';
+  if(alpha.includes(ticker)) return 'Alpha';
+  // Guess by ticker type
+  const etfs = ['QQQ','SPY','VTI','IWM','EEM','XLV','XLP','XLE','XLK','XLF','XLI','XLU','XLB','XLY','XLB',
+                 'TLT','SHY','IEI','GLD','DBC','TIP','VTV','SMH','ARKK','VGT','VBK'];
+  return etfs.includes(ticker) ? 'ETF (Beta)' : 'Stock (Alpha)';
+}
+
+// Load by URL param
+const id = new URLSearchParams(location.search).get('id');
+const sem = SEMESTERS.find(s=>s.id===id);
+if(sem) {
+  render(sem);
+} else {
+  document.getElementById('content').innerHTML = `
+    <p style="color:var(--muted)">Semester not found. <a href="regimes.html" style="color:var(--accent)">View all regimes</a></p>`;
+}
+</script>
+</body>
+</html>
