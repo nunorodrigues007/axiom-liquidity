@@ -22,12 +22,9 @@
     .brand{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
     .nav-links{display:flex;gap:28px;font-size:13px;color:var(--muted2)}
     .nav-links a:hover,.nav-links a.active{color:var(--text)}
-
     .wrap{max-width:var(--max);margin:0 auto;padding:48px 24px 80px}
     h1{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,42px);font-weight:600;letter-spacing:-.02em;margin-bottom:10px}
     .page-sub{font-size:15px;color:var(--muted);max-width:580px;line-height:1.7;margin-bottom:36px}
-
-    /* STAT ROW */
     .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
     @media(max-width:640px){.stat-row{grid-template-columns:1fr 1fr}}
     .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px}
@@ -36,8 +33,6 @@
     .stat-value.green{color:var(--green)}
     .stat-value.blue{color:var(--accent)}
     .stat-sub{font-size:11px;color:var(--muted2);margin-top:3px}
-
-    /* CHART */
     .chart-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:22px;margin-bottom:14px}
     .chart-kicker{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);margin-bottom:6px}
     .chart-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:600;margin-bottom:18px}
@@ -45,8 +40,6 @@
     .legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
     .legend-dot{width:10px;height:3px;border-radius:2px}
     canvas{width:100%;max-height:320px}
-
-    /* ANNUAL TABLE */
     .table-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden}
     .table-header{padding:16px 20px;border-bottom:1px solid var(--border)}
     .table-header h2{font-family:'Syne',sans-serif;font-size:16px;font-weight:600}
@@ -65,11 +58,6 @@
     .ret-bar-wrap{display:flex;align-items:center;gap:8px}
     .ret-bar{height:4px;border-radius:2px;min-width:2px}
     .td-val{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted)}
-
-    /* QUADRANT LEGEND */
-    .q-legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}
-    .q-pill{font-family:'DM Mono',monospace;font-size:10px;padding:4px 10px;border-radius:5px;border:1px solid;display:flex;align-items:center;gap:6px}
-
     footer{border-top:1px solid var(--border);padding:28px 24px;text-align:center;font-size:12px;color:var(--muted2);font-family:'DM Mono',monospace}
   </style>
 </head>
@@ -81,7 +69,9 @@
       <a href="index.html">Home</a>
       <a href="regimes.html">Regimes</a>
       <a href="performance.html" class="active">Performance</a>
-      <a href="about.html">About</a>
+      <a href="framework.html">Framework</a>
+      <a href="nuno.html">About Nuno</a>
+      <a href="about.html">Methodology</a>
     </div>
   </div>
 </nav>
@@ -138,7 +128,6 @@ const spVals = years.map(y=>ANNUAL_PERF[y].sv);
 const portRets = years.map(y=>ANNUAL_PERF[y].portfolio);
 const spRets = years.map(y=>ANNUAL_PERF[y].sp500);
 
-// Stats
 const avgPort = (portRets.reduce((a,b)=>a+b,0)/portRets.length).toFixed(1);
 const avgSP = (spRets.reduce((a,b)=>a+b,0)/spRets.length).toFixed(1);
 const outYears = portRets.filter((r,i)=>r>spRets[i]).length;
@@ -152,7 +141,6 @@ document.getElementById('stats').innerHTML = `
   <div class="stat-card"><div class="stat-label">Years Outperformed</div><div class="stat-value green">${outYears}/${years.length}</div><div class="stat-sub">positive alpha years</div></div>
 `;
 
-// Growth Chart
 const gCtx = document.getElementById('growthChart').getContext('2d');
 const gW = gCtx.canvas.offsetWidth || 900;
 const gH = 280;
@@ -166,38 +154,28 @@ function drawLineChart(ctx, w, h, datasets, labels) {
   const ch = h - pad.top - pad.bottom;
   const allVals = datasets.flatMap(d=>d.data);
   const minV = 0, maxV = Math.max(...allVals)*1.05;
-
   ctx.clearRect(0,0,w,h);
   ctx.font = '10px DM Mono, monospace';
   ctx.fillStyle = '#555';
   ctx.textAlign = 'right';
-
-  // Grid
   const ticks = 5;
   for(let i=0;i<=ticks;i++) {
     const v = minV + (maxV-minV)*i/ticks;
     const y = pad.top + ch*(1-i/ticks);
-    ctx.strokeStyle = '#1a1a1a';
-    ctx.lineWidth = 1;
+    ctx.strokeStyle = '#1a1a1a'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(w-pad.right,y); ctx.stroke();
     const label = v>=1e6 ? '$'+(v/1e6).toFixed(1)+'M' : '$'+(v/1e3).toFixed(0)+'K';
     ctx.fillText(label, pad.left-6, y+3);
   }
-
-  // X labels
-  ctx.textAlign = 'center';
-  ctx.fillStyle = '#555';
+  ctx.textAlign = 'center'; ctx.fillStyle = '#555';
   labels.forEach((l,i) => {
     if(i%2===0) {
       const x = pad.left + cw*i/(labels.length-1);
       ctx.fillText(l, x, h-pad.bottom+14);
     }
   });
-
-  // Lines
   datasets.forEach(ds => {
-    ctx.strokeStyle = ds.color;
-    ctx.lineWidth = ds.width || 2;
+    ctx.strokeStyle = ds.color; ctx.lineWidth = ds.width || 2;
     ctx.beginPath();
     ds.data.forEach((v,i) => {
       const x = pad.left + cw*i/(ds.data.length-1);
@@ -205,16 +183,10 @@ function drawLineChart(ctx, w, h, datasets, labels) {
       i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
     });
     ctx.stroke();
-
-    // Fill
     if(ds.fill) {
-      ctx.strokeStyle='transparent';
-      ctx.fillStyle = ds.fill;
-      ctx.lineTo(pad.left+cw, pad.top+ch);
-      ctx.lineTo(pad.left, pad.top+ch);
-      ctx.closePath();
-      ctx.fill();
-      ctx.beginPath();
+      ctx.strokeStyle='transparent'; ctx.fillStyle = ds.fill;
+      ctx.lineTo(pad.left+cw, pad.top+ch); ctx.lineTo(pad.left, pad.top+ch);
+      ctx.closePath(); ctx.fill(); ctx.beginPath();
     }
   });
 }
@@ -224,7 +196,6 @@ drawLineChart(gCtx, gW, gH, [
   {data:spVals, color:'#444', width:1.5}
 ], years);
 
-// Annual Chart
 const aCtx = document.getElementById('annualChart').getContext('2d');
 const aW = aCtx.canvas.offsetWidth || 900;
 const aH = 220;
@@ -241,42 +212,27 @@ function drawBarChart(ctx, w, h, portRets, spRets, labels) {
   const n = labels.length;
   const groupW = cw/n;
   const barW = groupW*0.35;
-
   ctx.clearRect(0,0,w,h);
-  ctx.font = '10px DM Mono, monospace';
-  ctx.fillStyle = '#555';
-
-  // Zero line
+  ctx.font = '10px DM Mono, monospace'; ctx.fillStyle = '#555';
   ctx.strokeStyle = '#333'; ctx.lineWidth=1;
   ctx.beginPath(); ctx.moveTo(pad.left,pad.top+ch/2); ctx.lineTo(w-pad.right,pad.top+ch/2); ctx.stroke();
-
-  // Y ticks
   ctx.textAlign='right';
   [-40,-20,0,20,40,60].forEach(v=>{
     if(v >= -maxAbs && v <= maxAbs) {
       const y = pad.top + ch*(1-(v+maxAbs)/(2*maxAbs));
-      ctx.fillStyle='#444';
-      ctx.fillText(v+'%', pad.left-4, y+3);
+      ctx.fillStyle='#444'; ctx.fillText(v+'%', pad.left-4, y+3);
     }
   });
-
   labels.forEach((l,i)=>{
     const cx = pad.left + groupW*(i+0.5);
     const pr = portRets[i], sr = spRets[i];
-
-    // S&P bar
     const sh = Math.abs(sr)/(2*maxAbs)*ch;
     const sy = sr>=0 ? zeroY-sh : zeroY;
-    ctx.fillStyle = '#333';
-    ctx.fillRect(cx-barW-1, sy, barW, sh);
-
-    // Portfolio bar
+    ctx.fillStyle = '#333'; ctx.fillRect(cx-barW-1, sy, barW, sh);
     const ph = Math.abs(pr)/(2*maxAbs)*ch;
     const py = pr>=0 ? zeroY-ph : zeroY;
     ctx.fillStyle = pr>=0 ? '#2a5cff' : '#f87171';
     ctx.fillRect(cx+1, py, barW, ph);
-
-    // Label
     if(i%2===0) {
       ctx.fillStyle='#555'; ctx.textAlign='center';
       ctx.fillText(l, cx, h-pad.bottom+12);
@@ -286,7 +242,6 @@ function drawBarChart(ctx, w, h, portRets, spRets, labels) {
 
 drawBarChart(aCtx, aW, aH, portRets, spRets, years);
 
-// Table
 const tbody = document.getElementById('perf-table');
 years.forEach(y=>{
   const d = ANNUAL_PERF[y];
