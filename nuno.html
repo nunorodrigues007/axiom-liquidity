@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About Nuno — Axiom Liquidity Research</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --border: #1e1e1e;
+      --text: #e8e8e8;
+      --muted: #888;
+      --accent: #c8a96e;
+      --accent-dim: rgba(200,169,110,0.12);
+      --link: #b8955a;
+      --radius: 3px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Georgia', serif;
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 0 2rem;
+      border-bottom: 1px solid var(--border);
+      height: 52px;
+    }
+    .nav-brand {
+      font-family: 'Georgia', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      text-decoration: none;
+      margin-right: auto;
+      text-transform: uppercase;
+    }
+    nav a {
+      font-family: 'Georgia', serif;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0 1rem;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+      letter-spacing: 0.04em;
+    }
+    nav a:hover { color: var(--text); }
+    nav a.active { color: var(--text); border-bottom-color: var(--accent); }
+
+    /* ── LAYOUT ── */
+    main {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 4rem 2rem 6rem;
+    }
+
+    /* ── PROFILE HERO ── */
+    .profile-hero {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      margin-bottom: 3.5rem;
+    }
+    .profile-photo {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      filter: grayscale(20%);
+    }
+    .profile-text .page-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+    .profile-text h1 {
+      font-size: 2rem;
+      font-weight: normal;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+      line-height: 1.2;
+    }
+    .profile-text .title-line {
+      font-size: 0.88rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      margin-bottom: 1rem;
+    }
+    .profile-text .tagline {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 480px;
+    }
+    .profile-text .tagline em {
+      color: var(--accent);
+      font-style: italic;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 3rem 0;
+    }
+
+    /* ── SECTION HEADERS ── */
+    .section-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+    h2 {
+      font-size: 1.35rem;
+      font-weight: normal;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+    p {
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+      line-height: 1.75;
+    }
+    p strong { color: var(--text); font-weight: normal; }
+
+    /* ── THREE PILLARS ── */
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin: 2rem 0;
+    }
+    .pillar {
+      background: var(--surface);
+      padding: 1.6rem;
+    }
+    .pillar-icon {
+      font-size: 1.1rem;
+      margin-bottom: 0.8rem;
+    }
+    .pillar h3 {
+      font-size: 0.88rem;
+      font-weight: normal;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .pillar p {
+      font-size: 0.82rem;
+      margin-bottom: 0;
+      line-height: 1.6;
+    }
+
+    /* ── TRACK RECORD STRIP ── */
+    .track-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin: 2rem 0;
+    }
+    .track-item {
+      background: var(--surface);
+      padding: 1.4rem;
+      text-align: center;
+    }
+    .track-value {
+      font-size: 1.5rem;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 0.2rem;
+      font-family: 'Georgia', serif;
+    }
+    .track-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      line-height: 1.4;
+    }
+
+    /* ── CALLOUT ── */
+    .callout {
+      background: var(--accent-dim);
+      border-left: 2px solid var(--accent);
+      padding: 1.4rem 1.6rem;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin: 2.5rem 0;
+    }
+    .callout p {
+      margin-bottom: 0;
+      font-size: 0.92rem;
+      color: var(--text);
+      line-height: 1.7;
+      font-style: italic;
+    }
+
+    /* ── LINKS ── */
+    .links-row {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .ext-link {
+      font-size: 0.82rem;
+      color: var(--link);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid rgba(200,169,110,0.3);
+      padding-bottom: 1px;
+      transition: border-color 0.15s;
+    }
+    .ext-link:hover { border-color: var(--accent); }
+
+    /* ── CTA ── */
+    .cta-row {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.65rem 1.3rem;
+      font-size: 0.8rem;
+      font-family: 'Georgia', serif;
+      letter-spacing: 0.06em;
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .cta:hover { opacity: 0.8; }
+    .cta-primary {
+      background: var(--accent);
+      color: #0a0a0a;
+    }
+    .cta-secondary {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .cta-secondary:hover { color: var(--text); border-color: var(--muted); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 1rem; }
+      nav a { padding: 0 0.55rem; font-size: 0.72rem; }
+      main { padding: 2.5rem 1.2rem 4rem; }
+      .profile-hero { grid-template-columns: 1fr; gap: 1.5rem; }
+      .profile-photo { width: 100px; height: 100px; }
+      .profile-text h1 { font-size: 1.6rem; }
+      .pillars { grid-template-columns: 1fr; }
+      .track-strip { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">Axiom Liquidity</a>
+  <a href="index.html">Home</a>
+  <a href="regimes.html">Regimes</a>
+  <a href="performance.html">Performance</a>
+  <a href="framework.html">Framework</a>
+  <a href="nuno.html" class="active">About Nuno</a>
+  <a href="about.html">Methodology</a>
+</nav>
+
+<main>
+
+  <div class="profile-hero">
+    <img
+      class="profile-photo"
+      src="https://usmrm.net/images/nuno.jpg"
+      alt="Nuno Nascimento Rodrigues"
+      onerror="this.style.display='none'"
+    />
+    <div class="profile-text">
+      <p class="page-label">The Investor</p>
+      <h1>Nuno Nascimento<br>Rodrigues</h1>
+      <p class="title-line">Macro Investor · Independent Researcher</p>
+      <p class="tagline">
+        Twenty years applying a single discipline: <em>read the regime, build the portfolio, document the record.</em>
+        No predictions. No narratives. Regime clarity.
+      </p>
+    </div>
+  </div>
+
+  <hr>
+
+  <p class="section-label">Investment Philosophy</p>
+  <h2>Macro first. Process always. Noise never.</h2>
+  <p>
+    The investment approach is grounded in macroeconomic regime analysis. Before any allocation decision, the global liquidity conditions, central bank policy and interest rate dynamics are assessed to identify the economic environment most likely to drive asset returns in the coming semester.
+  </p>
+  <p>
+    Portfolios are constructed through disciplined asset allocation and selective exposure to sectors and themes that benefit from the prevailing regime. The process combines macro perspective with fundamental valuation — implemented through <strong>semi-annual rebalancing</strong> and an absolute focus on capital preservation.
+  </p>
+  <p>
+    The objective is to deliver consistent long-term returns while avoiding reactive decisions driven by short-term market noise. The framework is the guardrail against impulse. The track record is the proof that discipline compounds.
+  </p>
+
+  <div class="pillars">
+    <div class="pillar">
+      <div class="pillar-icon">◎</div>
+      <h3>Macro Regime Analysis</h3>
+      <p>Identifying the economic environment — rates, balance sheet, liquidity — before positioning portfolios. The regime determines the profile, not the other way around.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">◈</div>
+      <h3>Disciplined Allocation</h3>
+      <p>Macro perspective combined with fundamental valuation. Every position has a thesis. Every thesis has a trigger. Every trigger is documented before the semester begins.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">◉</div>
+      <h3>Capital Preservation</h3>
+      <p>Consistent long-term returns without reactive decisions. The anchor layer is sacred — it is never sacrificed for yield. Protection of the compounding base is non-negotiable.</p>
+    </div>
+  </div>
+
+  <hr>
+
+  <p class="section-label">Track Record</p>
+  <h2>Twenty years of documented decisions.</h2>
+  <p>
+    The Axiom Liquidity record spans 42 semesters — from S1 2005 to the present day. Every allocation is documented with the regime diagnosis that motivated it. The performance is not claimed; it is auditable.
+  </p>
+
+  <div class="track-strip">
+    <div class="track-item">
+      <span class="track-value">+20.4%</span>
+      <span class="track-label">Average annual return<br>vs +9.6% S&P 500</span>
+    </div>
+    <div class="track-item">
+      <span class="track-value">$9.83M</span>
+      <span class="track-label">$200K grown since 2005<br>vs $1.14M buy &amp; hold</span>
+    </div>
+    <div class="track-item">
+      <span class="track-value">16/21</span>
+      <span class="track-label">Years with positive alpha<br>against the S&P 500</span>
+    </div>
+    <div class="track-item">
+      <span class="track-value">42</span>
+      <span class="track-label">Semesters documented<br>S1 2005 → S1 2026</span>
+    </div>
+  </div>
+
+  <div class="callout">
+    <p>
+      "The most important year in the record is 2022: +3.2% while the S&P fell −19.4%. Not because of a clever call — but because the QT+Rates regime was identified correctly at the end of 2021, and the defensive rotation was executed before the damage occurred. The framework did not predict the crash. It read the regime and acted accordingly."
+    </p>
+  </div>
+
+  <hr>
+
+  <p class="section-label">The Framework in Practice</p>
+  <h2>Process under pressure.</h2>
+  <p>
+    In March 2026, the USA–Iran conflict triggered the first extraordinary rebalance in the framework's history. With the Equity Risk Premium falling below the 0.8% sentinel threshold and CPI approaching the 3.5% trigger, the Macro-Resilience Matrix indicated two of three systemic signals simultaneously active. Rather than acting on fear — or ignoring the data — the framework was applied with the same discipline as any other semester: scorecard updated, regime mapped, portfolio adjusted accordingly.
+  </p>
+  <p>
+    The extraordinary rebalance reduced technology exposure, introduced energy and gold positions, and preserved the BIL cash allocation given the Fed's inability to cut rates. By May 2026, the review confirmed: none of the reversal conditions had been met. The framework held.
+  </p>
+  <p>
+    <strong>This is the value of a rules-based process.</strong> Not prediction. Not intuition. Regime clarity — applied consistently, documented publicly, auditable in full.
+  </p>
+
+  <div class="links-row">
+    <a class="ext-link" href="https://usmrm.net" target="_blank">US Macro-Resilience Matrix →</a>
+    <a class="ext-link" href="performance.html">Full Track Record →</a>
+    <a class="ext-link" href="framework.html">Framework Architecture →</a>
+  </div>
+
+  <div class="cta-row">
+    <a class="cta cta-primary" href="regimes.html">Browse All Semesters →</a>
+    <a class="cta cta-secondary" href="about.html">Read the Methodology →</a>
+  </div>
+
+</main>
+
+<footer>
+  Axiom Liquidity Research · Portfolio FED 2005–2026 · For informational and educational purposes only. Not investment advice.
+</footer>
+
+</body>
+</html>
