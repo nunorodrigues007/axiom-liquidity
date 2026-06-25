@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>US10Y / DXY — Axiom Liquidity Research</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#080c17;--surface:#0f1626;--surface2:#162034;--border:#1d2d47;
+    --accent:#3b82f6;--accent-dim:rgba(59,130,246,0.12);
+    --text:#dde5f4;--muted:#6a82a0;
+    --on:#22c55e;--off:#ef4444;--warn:#f59e0b;
+    --mono:'JetBrains Mono',monospace;--sans:'Inter',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);font-family:var(--sans);color:var(--text);padding:32px 20px;display:flex;flex-direction:column;align-items:center;gap:32px;min-height:100vh}
+  .slide{width:100%;max-width:900px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:36px 44px;display:flex;flex-direction:column;gap:28px;position:relative;overflow:hidden}
+  .slide::after{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent);border-radius:12px 0 0 12px}
+  .slide-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding-bottom:22px;border-bottom:1px solid var(--border)}
+  .eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+  .slide-title{font-size:24px;font-weight:700;letter-spacing:-0.5px;line-height:1.2}
+  .ratio{font-family:var(--mono);font-size:26px;color:var(--accent)}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:4px;white-space:nowrap}
+  .pill-blue{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(59,130,246,0.25)}
+  .pill-on{background:rgba(34,197,94,0.1);color:var(--on);border:1px solid rgba(34,197,94,0.25)}
+  .pill-off{background:rgba(239,68,68,0.1);color:var(--off);border:1px solid rgba(239,68,68,0.25)}
+  .pill-warn{background:rgba(245,158,11,0.1);color:var(--warn);border:1px solid rgba(245,158,11,0.25)}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+  .body-text{font-size:13.5px;color:var(--muted);line-height:1.75;display:flex;flex-direction:column;gap:12px}
+  .body-text strong{color:var(--text);font-weight:600}
+  .section-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  .ratio-box{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:18px 22px;display:flex;flex-direction:column;gap:8px;margin-top:20px}
+  .ratio-formula{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--accent);letter-spacing:1px}
+  .formula-sub{font-size:12px;color:var(--muted);line-height:1.6}
+  .formula-sub strong{color:var(--text)}
+  .quadrant-wrap{display:flex;flex-direction:column;align-items:center;gap:6px}
+  .axis-label{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;text-align:center}
+  .quadrant-row{display:flex;align-items:center;gap:6px;width:100%}
+  .quadrant-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:4px;flex:1}
+  .q{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:12px;display:flex;flex-direction:column;gap:4px}
+  .q-arrows{font-family:var(--mono);font-size:12px;font-weight:700}
+  .q-label{font-size:11px;font-weight:600;color:var(--text);line-height:1.3}
+  .q-sub{font-size:10px;color:var(--muted);line-height:1.4}
+  .scenario-table{width:100%;border-collapse:separate;border-spacing:0 5px}
+  .scenario-table thead th{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:6px 14px;text-align:left;font-weight:500}
+  .scenario-table tbody tr td{background:var(--surface2);padding:13px 14px;font-size:12.5px;color:var(--muted);vertical-align:top}
+  .scenario-table tbody tr td:first-child{border-radius:6px 0 0 6px;color:var(--text);font-weight:600;font-size:12px;width:170px}
+  .scenario-table tbody tr td:last-child{border-radius:0 6px 6px 0}
+  .move{font-family:var(--mono);font-size:13px;font-weight:700;display:block;margin-bottom:3px}
+  .trigger-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .trigger-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:15px 18px;display:flex;flex-direction:column;gap:7px}
+  .t-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+  .t-value{font-family:var(--mono);font-size:16px;font-weight:700}
+  .t-desc{font-size:12px;color:var(--muted);line-height:1.5}
+  .t-desc strong{color:var(--text)}
+  .t-red .t-value{color:var(--off)}
+  .t-amber .t-value{color:var(--warn)}
+  .slide-footer{display:flex;justify-content:space-between;align-items:center;padding-top:18px;border-top:1px solid var(--border)}
+  .footer-left{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:1px}
+  .footer-brand{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+  .footer-name{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;font-weight:700}
+  .footer-sub{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+  @media(max-width:640px){
+    body{padding:16px 12px;gap:20px}
+    .slide{padding:24px 20px;gap:20px}
+    .slide-title{font-size:18px}
+    .ratio{font-size:20px}
+    .two-col{grid-template-columns:1fr}
+    .trigger-grid{grid-template-columns:1fr}
+    .scenario-table thead{display:none}
+    .scenario-table tbody tr td:first-child{width:auto}
+  }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1 -->
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="eyebrow">Axiom Liquidity Research · Pillar II — Liquidity</div>
+      <h1 class="slide-title"><span class="ratio">US10Y ÷ DXY</span><br>The Global Liquidity Barometer</h1>
+    </div>
+    <span class="pill pill-blue">Liquidity Signal</span>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="section-label">What the ratio measures</div>
+      <div class="body-text">
+        <p>The ratio relates the <strong>cost of the US benchmark sovereign debt</strong> (US10Y) to the <strong>relative strength of the dollar as the world's reserve currency</strong> (DXY).</p>
+        <p>The absolute value is not what matters — it is the <strong>relative direction of each component</strong>. The signal reveals whether global liquidity is expanding healthily or contracting under dollar scarcity.</p>
+        <p>Within the <strong>Axiom Liquidity Framework</strong>, this signal anchors the <em>Liquidity Layer</em> and must be cross-referenced with the <em>Equity Risk Premium</em> to confirm positioning.</p>
+      </div>
+      <div class="ratio-box">
+        <div class="ratio-formula">Ratio = US10Y (%) / DXY</div>
+        <div class="formula-sub">
+          <strong>US10Y</strong> — 10-year Treasury yield (benchmark cost of capital)<br>
+          <strong>DXY</strong> — Dollar index vs. 6 major currencies (global collateral strength)
+        </div>
+      </div>
+    </div>
+
+    <div class="quadrant-wrap">
+      <div class="axis-label">US10Y ↑</div>
+      <div class="quadrant-row">
+        <div class="axis-label" style="writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;">DXY ↓</div>
+        <div class="quadrant-grid">
+          <div class="q" style="border-color:rgba(34,197,94,0.3)">
+            <span class="q-arrows" style="color:var(--on)">10Y↑ DXY↓</span>
+            <span class="q-label">Risk-On Expansionary</span>
+            <span class="q-sub">Healthy global liquidity. Capital flows into risk assets.</span>
+          </div>
+          <div class="q" style="border-color:rgba(245,158,11,0.3)">
+            <span class="q-arrows" style="color:var(--warn)">10Y↑ DXY↑</span>
+            <span class="q-label">Monetary Shock</span>
+            <span class="q-sub">Aggressive Fed tightening. Valuation multiples under pressure.</span>
+          </div>
+          <div class="q" style="border-color:rgba(59,130,246,0.3)">
+            <span class="q-arrows" style="color:var(--accent)">10Y↓ DXY↓</span>
+            <span class="q-label">Reflation / QE</span>
+            <span class="q-sub">Dovish Fed + weak dollar. Gold and commodities favoured.</span>
+          </div>
+          <div class="q" style="border-color:rgba(239,68,68,0.3)">
+            <span class="q-arrows" style="color:var(--off)">10Y↓ DXY↑</span>
+            <span class="q-label">Dollar Shortage Risk-Off</span>
+            <span class="q-sub">Flight to safety. The dollar cannibalises all asset classes.</span>
+          </div>
+        </div>
+        <div class="axis-label" style="writing-mode:vertical-rl;white-space:nowrap;">DXY ↑</div>
+      </div>
+      <div class="axis-label">US10Y ↓</div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="footer-left">Framework · US10Y/DXY Liquidity Signal · 2026</span>
+    <div class="footer-brand">
+      <span class="footer-name">Axiom Liquidity</span>
+      <span class="footer-sub">axiomliquidity.net &nbsp;·&nbsp; 01 / 02</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 2 -->
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="eyebrow">Axiom Liquidity Research · Decision Matrix</div>
+      <h1 class="slide-title">Scenarios, Signals <span style="color:var(--muted);font-weight:300">&</span> Allocation</h1>
+    </div>
+    <span class="pill pill-blue">Axiom Framework</span>
+  </div>
+
+  <table class="scenario-table">
+    <thead>
+      <tr>
+        <th>Scenario</th>
+        <th>Risk State</th>
+        <th>Liquidity Effect</th>
+        <th>Axiom Layer</th>
+        <th>MRM Allocation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="move" style="color:var(--on)">10Y↑ &nbsp;DXY↓</span>Risk-On Expansionary</td>
+        <td><span class="pill pill-on">Risk-On</span></td>
+        <td>Capital exits safe havens. Liquidity expanding globally. Credit spreads compress.</td>
+        <td style="font-family:var(--mono);font-size:11px;color:var(--accent)">QE / Rates Rising<br>Beta + Alpha</td>
+        <td style="font-size:12px">Cyclical equities, commodities, real assets. Reduce cash.</td>
+      </tr>
+      <tr>
+        <td><span class="move" style="color:var(--off)">10Y↓ &nbsp;DXY↑</span>Dollar Shortage</td>
+        <td><span class="pill pill-off">Risk-Off</span></td>
+        <td>Extreme flight to USD liquidity. Dollar appreciates against everything. Credit contracts.</td>
+        <td style="font-family:var(--mono);font-size:11px;color:var(--accent)">QT / Rates Falling<br>Anchor Only</td>
+        <td style="font-size:12px">Cash, T-Bills, physical Gold. Minimise equities and duration.</td>
+      </tr>
+      <tr>
+        <td><span class="move" style="color:var(--warn)">10Y↑ &nbsp;DXY↑</span>Monetary Shock</td>
+        <td><span class="pill pill-warn">Caution</span></td>
+        <td>Aggressive Fed tightening. Discount rate rises. Valuation multiples compress.</td>
+        <td style="font-family:var(--mono);font-size:11px;color:var(--accent)">QT / Rates Rising<br>Anchor Reduced</td>
+        <td style="font-size:12px">Reduce duration. TIPS. Avoid growth and long-duration assets.</td>
+      </tr>
+      <tr>
+        <td><span class="move" style="color:var(--accent)">10Y↓ &nbsp;DXY↓</span>Reflation / QE</td>
+        <td><span class="pill pill-on">Risk-On</span></td>
+        <td>Dovish Fed + weak dollar. Artificial liquidity. Favours real assets and EM.</td>
+        <td style="font-family:var(--mono);font-size:11px;color:var(--accent)">QE / Rates Falling<br>Beta + Alpha</td>
+        <td style="font-size:12px">Gold, emerging markets, commodities. Value over Growth.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div>
+    <div class="section-label" style="margin-bottom:12px">Alert Triggers — Liquidity Layer × Equity Risk Premium</div>
+    <div class="trigger-grid">
+      <div class="trigger-card t-red">
+        <div class="t-label">Critical Trigger — Exit Signal</div>
+        <div class="t-value">ERP &lt; 1% + 10Y↓ DXY↑</div>
+        <div class="t-desc"><strong>Ratio in free fall</strong> combined with a <strong>near-zero equity premium</strong> — equities no longer compensate for risk vs risk-free. Exit Beta and Alpha positions immediately.</div>
+      </div>
+      <div class="trigger-card t-amber">
+        <div class="t-label">Watch Trigger — Cycle at Risk</div>
+        <div class="t-value">Initial Claims &gt; 300k</div>
+        <div class="t-desc">Classic historical threshold for labour market deterioration. Precedes yield decline and potential <strong>Dollar Shortage</strong> if DXY reacts to the upside.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="footer-left">Axiom Liquidity Research · Monetary Matrix Framework · 2026</span>
+    <div class="footer-brand">
+      <span class="footer-name">Axiom Liquidity</span>
+      <span class="footer-sub">axiomliquidity.net &nbsp;·&nbsp; 02 / 02</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
