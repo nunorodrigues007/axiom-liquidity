@@ -474,6 +474,17 @@ const SEMESTERS = [
    anchor:"IEI 10%, XLV 5% — dual protection: duration + defensive equity",
    beta:"QQQ 15%, SMH 10%, IWM 10%, EEM 10% — diversified with EM/semis outperforming",
    alpha:"AMZN 10%, GOOG 10%, META 10%, TSLA 10% — growth mix; TSLA detracted"
+  },
+  {id:"S2-2026",label:"S2 2026",year:2026,half:2,
+   quadrant:"transition",
+   quadrantLabel:"In Between (Superior Direito)",
+   fedRate:"3.50–3.75% (hold, bias subida — possivel hike Jul)",
+   balanceSheet:"$6.79T — QT terminou, ligeiramente expansivo",
+   regime:"MRM Score 6.65/10 — 'Gelo Muito Fino'. Fed hawkish (Warsh). CPI 4.2% maximo desde Abr 2023. ERP comprimido (~0.85%). BS estabilizou — unico pilar favoravel. Regra dos 3: 1/3 activos (CPI).",
+   rationale:"Score 6.65 impos Perfil B Moderado. Portfolio centrado em AI Infrastructure secular (NVDA 12%, AVGO 10%, MSFT 10%) com ancoragem reforcada (SPY 20%) e cash explicito (BIL 7% a 3.75% yield — com ERP simples negativo). Saida de TSLA, energia e ouro. Entrada de GOOG como re-rating value play (P/E 20x). Datas criticas: CPI Jun (14 Jul) e FOMC Jul (29 Jul — possivel hike).",
+   anchor:"SPY 20% + BIL 7% — broad market anchor + cash explicito com ERP negativo",
+   beta:"QQQ 10%, VGT 8%, BIL 7% — tech quality + cash estrutural",
+   alpha:"MSFT 10%, NVDA 12%, AVGO 10%, AMZN 9%, GOOG 9%, META 5% — AI Infrastructure + Quality Compounders"
   }
 ];
 
@@ -498,6 +509,18 @@ const HOLDINGS = {"S1 2005": [{"ticker": "XLV", "weight": 15.0, "ret": 2.78}, {"
   {"ticker": "IWM",  "weight": 10.0, "ret": 21.80},
   {"ticker": "SMH",  "weight": 10.0, "ret": 69.83},
   {"ticker": "QQQ",  "weight": 15.0, "ret": 15.01}
+,
+"S2 2026": [
+  {"ticker": "SPY",  "weight": 20.0, "ret": 0.0},
+  {"ticker": "QQQ",  "weight": 10.0, "ret": 0.0},
+  {"ticker": "VGT",  "weight": 8.0,  "ret": 0.0},
+  {"ticker": "BIL",  "weight": 7.0,  "ret": 0.0},
+  {"ticker": "MSFT", "weight": 10.0, "ret": 0.0},
+  {"ticker": "NVDA", "weight": 12.0, "ret": 0.0},
+  {"ticker": "AVGO", "weight": 10.0, "ret": 0.0},
+  {"ticker": "AMZN", "weight": 9.0,  "ret": 0.0},
+  {"ticker": "GOOG", "weight": 9.0,  "ret": 0.0},
+  {"ticker": "META", "weight": 5.0,  "ret": 0.0}
 ]};
 
 const ANNUAL_PERF = {"2005": {"portfolio": 12.81, "sp500": 3.0, "pv": 225627, "sv": 206000}, "2006": {"portfolio": 17.72, "sp500": 13.62, "pv": 265599, "sv": 234057}, "2007": {"portfolio": 17.18, "sp500": 3.53, "pv": 311227, "sv": 242319}, "2008": {"portfolio": -11.11, "sp500": -38.49, "pv": 276647, "sv": 149051}, "2009": {"portfolio": 56.82, "sp500": 23.45, "pv": 433833, "sv": 184003}, "2010": {"portfolio": 13.12, "sp500": 12.78, "pv": 490760, "sv": 207519}, "2011": {"portfolio": 8.19, "sp500": 0.0, "pv": 530952, "sv": 207519}, "2012": {"portfolio": 11.27, "sp500": 13.41, "pv": 590776, "sv": 235347}, "2013": {"portfolio": 25.11, "sp500": 29.6, "pv": 739131, "sv": 305010}, "2014": {"portfolio": 13.68, "sp500": 11.39, "pv": 840256, "sv": 339750}, "2015": {"portfolio": 18.52, "sp500": -0.73, "pv": 995859, "sv": 337270}, "2016": {"portfolio": 17.64, "sp500": 9.54, "pv": 1171494, "sv": 369446}, "2017": {"portfolio": 32.89, "sp500": 19.42, "pv": 1556809, "sv": 441192}, "2018": {"portfolio": 5.51, "sp500": -6.24, "pv": 1642627, "sv": 413662}, "2019": {"portfolio": 33.23, "sp500": 28.88, "pv": 2188392, "sv": 533127}, "2020": {"portfolio": 49.79, "sp500": 16.26, "pv": 3278028, "sv": 619813}, "2021": {"portfolio": 30.7, "sp500": 26.89, "pv": 4284268, "sv": 786481}, "2022": {"portfolio": 3.23, "sp500": -19.44, "pv": 4422674, "sv": 633589}, "2023": {"portfolio": 33.43, "sp500": 24.23, "pv": 5901387, "sv": 787108}, "2024": {"portfolio": 37.43, "sp500": 23.31, "pv": 8110001, "sv": 970583}, "2025": {"portfolio": 20.57, "sp500": 16.35, "pv": 9778375, "sv": 1129273}, "2026": {"portfolio": 11.27, "sp500": 6.9, "pv": 10880398, "sv": 1207193}};
