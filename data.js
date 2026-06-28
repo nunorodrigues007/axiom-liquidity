@@ -509,7 +509,7 @@ const HOLDINGS = {"S1 2005": [{"ticker": "XLV", "weight": 15.0, "ret": 2.78}, {"
   {"ticker": "IWM",  "weight": 10.0, "ret": 21.80},
   {"ticker": "SMH",  "weight": 10.0, "ret": 69.83},
   {"ticker": "QQQ",  "weight": 15.0, "ret": 15.01}
-,
+],
 "S2 2026": [
   {"ticker": "SPY",  "weight": 20.0, "ret": 0.0},
   {"ticker": "QQQ",  "weight": 10.0, "ret": 0.0},
