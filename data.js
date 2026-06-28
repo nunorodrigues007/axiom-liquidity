@@ -477,13 +477,13 @@ const SEMESTERS = [
   },
   {id:"S2-2026",label:"S2 2026",year:2026,half:2,
    quadrant:"transition",
-   quadrantLabel:"In Between (Superior Direito)",
-   fedRate:"3.50–3.75% (hold, bias subida — possivel hike Jul)",
-   balanceSheet:"$6.79T — QT terminou, ligeiramente expansivo",
-   regime:"MRM Score 6.65/10 — 'Gelo Muito Fino'. Fed hawkish (Warsh). CPI 4.2% maximo desde Abr 2023. ERP comprimido (~0.85%). BS estabilizou — unico pilar favoravel. Regra dos 3: 1/3 activos (CPI).",
-   rationale:"Score 6.65 impos Perfil B Moderado. Portfolio centrado em AI Infrastructure secular (NVDA 12%, AVGO 10%, MSFT 10%) com ancoragem reforcada (SPY 20%) e cash explicito (BIL 7% a 3.75% yield — com ERP simples negativo). Saida de TSLA, energia e ouro. Entrada de GOOG como re-rating value play (P/E 20x). Datas criticas: CPI Jun (14 Jul) e FOMC Jul (29 Jul — possivel hike).",
-   anchor:"SPY 20% + BIL 7% — broad market anchor + cash explicito com ERP negativo",
-   beta:"QQQ 10%, VGT 8%, BIL 7% — tech quality + cash estrutural",
+   quadrantLabel:"In Between (Upper Right)",
+   fedRate:"3.50–3.75% (hold, hawkish bias — hike possible July)",
+   balanceSheet:"$6.79T — QT complete, balance sheet stable/slightly expanding",
+   regime:"MRM Score 6.65/10 — 'Thin Ice'. QT done, balance sheet stabilising. Fed hawkish under new Chair Warsh. CPI at 4.2% — highest since April 2023. ERP compressed (~0.85% USMRM methodology; simple EY-10Y is negative). Balance sheet the only favourable pillar. Rule of 3: 1/3 triggers active (CPI).",
+   rationale:"Score 6.65 mandated Moderate Profile B with reinforced anchoring. Portfolio centred on secular AI Infrastructure theme (NVDA 12%, AVGO 10%, MSFT 10%) with maximum anchor weight (SPY 20%) and explicit cash position (BIL 7% at ~3.75% yield — rational with negative simple ERP). Exits: TSLA, energy (IEO/XOM thesis reversed with Iran deal), gold (GLD), BLK. New entry: GOOG as re-rating value play at P/E 20x — cheapest quality compounder in the universe. Key risk dates: CPI June (Jul 14) and FOMC July (Jul 29 — possible first hike).",
+   anchor:"SPY 20% + BIL 7% — broad market anchor + explicit cash with negative simple ERP",
+   beta:"QQQ 10%, VGT 8%, BIL 7% — quality tech exposure + structural cash",
    alpha:"MSFT 10%, NVDA 12%, AVGO 10%, AMZN 9%, GOOG 9%, META 5% — AI Infrastructure + Quality Compounders"
   }
 ];
